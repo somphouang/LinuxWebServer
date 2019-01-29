@@ -1,11 +1,35 @@
 # Linux Web Server Project
 
-# Project Overview
+## Project Overview
 This project uses the base OS installation of a Linux Server using Ubuntu and prepare it to host a web application.
 Also, provision the AWS Lightsail instance using OS only option then configure the AWS services like Route53 domain and host configuration to use "somphouang.com".
 The process steps involves installing and configuring the Apache Web Server, WSGI to launch the python flask web application, configuring a progresql database server, and deploying an ItemCatalog web application onto it.
- 
-# STEP 1: Get started on AWS Lightsail
+
+## Getting Started
+
+### Requirements
+Software Packages that are needed to be installed and configured summary
+* sudo apt-get install ufw
+* sudo apt-get install postgresql
+* sudo apt-get install postgresql-contrib
+* sudo apt-get install apache2
+* sudo apt-get install libpq-dev
+* sudo apt-get install libapache2-mod-wsgi
+* sudo apt-get install python-certbot-apache
+
+* python-pip
+** pip install psycopg2 Flask-SQLAlchemy Flask-Migrate
+** pip install google_auth_oauthlib
+
+#### Note: letsencrypt packages and deployment instructions are in STEP 2 below
+* letsencrypt via git 
+* Add Apt Repository
+```
+$ sudo add-apt-repository ppa:certbot/certbot
+```
+
+## Deployment
+### STEP 1: Get started on AWS Lightsail
 * 1. Create an account with Amazon Web Services cloud [aws.amazon.com](https://aws.amazon.com)
 * Click on the top right button "sign In to the Console" log into console and enter the login.
 
@@ -21,12 +45,12 @@ and attached it to the new Lightsail instance.
 
 * 10. Optional and used in this project:
 
-## In AWS Console, Route53 
+### In AWS Console, Route53 
 * 1. Register domain "somphouang.com"
 * 2. In Hosted Zone, select "somphouang.com"
 * 3. Create Record Set with Type "A - IPv4 address" and enter Value "18.233.103.5"
  
-# STEP 2: Configuring the AWS Lightsail Instance
+### #STEP 2: Configuring the AWS Lightsail Instance
 * 1. When connected using the AWS Console web interface, from "Connect using SSH"
 * a.  Add the "grader" user
 ```
@@ -66,10 +90,15 @@ Edit the file in /etc/ssh/sshd_config
 $ sudo nano /etc/ssh/sshd_config
 ```
 
-Change in the file from "Port 22" to "Port 2200"
+Change in the file /etc/ssh/sshd_config from "Port 22" to "Port 2200"
 ```
 # What ports, IPs and protocols we listen for
 Port 2200
+```
+
+In the file /etc/ssh/sshd_config under Authentication section change from "PermitRootLogin prohibit-password" to "PermitRootLogin no" to keep it safe.
+```
+PermitRootLogin no
 ```
 
 At this point, the new user grader exist and has sudo, however, we need to add the SSH key for remote login
@@ -83,6 +112,25 @@ This will create the file if using all defaults path and filename into "folder/.
 ```
 $ sudo nano /home/grader/.ssh/authorized_keys
 ```
+
+Only allow connections for SSH (port 2200), HTTP (port 80), and NTP (port 123).  Install, Configure, and Enable UFW.
+```
+$ sudo apt-get install ufw
+$ sudo ufw default deny incoming
+$ sudo ufw default allow outgoing
+$ sudo ufw allow 2200
+$ sudo ufw allow 80
+$ sudo ufw allow 123
+```
+Note: For this Web Application using Google API OAuth2 required HTTPS secure transport for user profile information needed for this application so also allow HTTPS 443 port.
+```
+$ sudo ufw allow 443
+```
+Enable the UFW
+```
+$ sudo ufw enable
+```
+
 * Make sure that on the AWS Lightsail Home web interface click on the Instance and go to Network tab, add the new rule for custom TCP 2200, when tested below successfully, can go remove the rule for SSH at 22.
 * In the PC using git bash, try to log into the remote Linux Server by ssh
 ```
@@ -250,7 +298,7 @@ Include /etc/letsencrypt/options-ssl-apache.conf
 
 ```
 
-# STEP 3: Update the Google API Client Key Instruction
+### STEP 3: Update the Google API Client Key Instruction
 
 ### Google API Client Key Instruction
 1. Sign in at `https://console.developers.google.com/apis/`
@@ -271,8 +319,13 @@ https://somphouang.com/catalog
 https://somphouang.com/oauth2callback
 
 ```
+### STEP 4: Update the packages to the latest versions
+```
+$ sudo apt-get update && sudo apt-get upgrade
+$ sudo apt-get update && sudo apt-get dist-upgrade
+```
 
+### STEP 5: Please visit [http://somphouang.com](http://somphouang.com) to test run this web application for Item Catalog!
 
-# STEP 4: Please visit [http://somphouang.com](http://somphouang.com) to test run this web application for Item Catalog!
 
 Thank you to Udacity Nanodegree Course trainers for Fullstack Web Developer and teaching me to learn to be able to develop exciting projects like this one. 
