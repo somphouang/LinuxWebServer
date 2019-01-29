@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="panel-group">
+  <div class="panel panel-primary">
+    <div class="panel-heading"><h1>User Profile: {{ user.name }}</h1></div>
+    <div class="panel-body"><img src="{{ user.photo }}" alt="{{ user.name }}" class="img-circle"></div>
+  </div>
+</div>
+{% endblock %}

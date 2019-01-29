@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Index</h1>
+  {% if user.authorized %}
+  <p><a href="{{ url_for('category_add_route') }}" class="btn btn-primary">Add Category</a></p>
+  {% endif %}
+  <p>
+    {% for category in content.categories %}
+    <a href="{{ url_for('category_route', category_name=category.name) }}" class="list-group-item">{{ category.name }}</a>
+    {% endfor %}
+  </p>
+{% endblock %}

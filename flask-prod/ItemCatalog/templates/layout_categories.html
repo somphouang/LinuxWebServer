@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block sidebar %}
+<h4>Categories</h4>
+<div class="list-group">
+  {% for category in content.categories %}
+  <a href="{{ url_for('category_route', category_name=category.name) }}" class="list-group-item">{{ category.name }}</a>
+  {% endfor %}
+</div>
+{% endblock %}

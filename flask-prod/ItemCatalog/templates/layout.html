@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, strink-to-fit=yes">
+  <meta http-equiv="x-ua-Compatible" content="ie=edge">
+  <title>{% block title %}{{page.title}}{% endblock %} - Catalog Web Application</title>
+
+  {% block head %}
+  <!-- Bootstrap fonts and style adjustments -->
+   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SlJL6LojdN8eNCOoIfK7KJ7SgRFeYBDu8tB1uxELbSAv+RVgD12pZmOcxTUTPXIg" crossorigin="anonymous">
+   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  {% endblock %}
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand" href="{{ url_for('index_route') }}">Catalog</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsMenu" aria-controls="navbarsMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsMenu">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('index_route') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('categories_route') }}">Categories</a>
+        </li>
+      </ul>
+    </div>
+
+    <span class="user-box">
+      <div class="btn btn-primary">
+      {% if user.authorized %}
+      {{ user.name }} (<a href="{{ url_for('profile_route') }}">Profile</a> :: <a href="{{ url_for('logout_route') }}">Logout</a>)
+      {% else %}
+      <a class="nav-link" href="{{ url_for('login_route') }}">Login</a></div>
+      {% endif %}
+    </span>
+  </nav>
+
+
+  <main role="main" class="container">
+    <!-- provide some space between the body and navigation bar -->
+    <br><br><br>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="row row-offcanvas row-offcanvas-right">
+
+      {% if page.has_sidebar %}
+      <div class="col-12 col-md-9">
+      {% else %}
+      <div class="col-12 col-md-12">
+      {% endif %}
+        {% block content %}Content placeholder{% endblock %}
+      </div>
+
+      {% if page.has_sidebar %}
+      <div class="col-6 col-md-3 sidebar-offcanvas" id="sidebar">
+        {% block sidebar %}{% endblock %}
+      </div>
+      {% endif %}
+
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; Som Phouangpraseuth 2019</p>
+  </footer>
+
+  {% block foot %}
+  {% endblock %}
+</body>
+</html>

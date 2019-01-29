@@ -1,0 +1,18 @@
+{% extends "layout_categories.html" %}
+{% block content %}
+  <h1>Category :: {{ content.category.name }}</h1>
+  {% if user.authorized %}
+  <p>
+    <a href="{{ url_for('item_add_route', category_name=content.category.name) }}" class="btn btn-primary">Add Item</a>
+    {% if user.id == content.category.owner %}
+    <a href="{{ url_for('category_edit_route', category_name=content.category.name) }}" class="btn btn-secondary">Edit Category</a>
+    <a href="{{ url_for('category_delete_route', category_name=content.category.name) }}" class="btn btn-danger">Delete Category</a>
+    {% endif %}
+  </p>
+  {% endif %}
+  <p>
+      {% for item in content.category['items'] %}
+      <a href="{{ url_for('item_route', item_name=item.name) }}" class="list-group-item">{{ item.name }}</a>
+      {% endfor %}
+  </p>
+{% endblock %}

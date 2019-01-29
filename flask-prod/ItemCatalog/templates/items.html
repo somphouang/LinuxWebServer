@@ -1,0 +1,13 @@
+{% extends "layout_categories.html" %}
+{% block content %}
+  <h1>Item: {{ content.item.name }}</h1>
+  {% if user.authorized and user.id == content.item.owner %}
+  <p>
+    <a href="{{ url_for('item_edit_route', item_name=content.item.name) }}" class="btn btn-secondary">Edit Item</a>
+    <a href="{{ url_for('item_delete_route', item_name=content.item.name) }}" class="btn btn-danger">Delete Item</a>
+  </p>
+  {% endif %}
+  <p>
+      {{ content.item.description }}
+  </p>
+{% endblock %}

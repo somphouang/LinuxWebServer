@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+  {% if content.is_edit %}
+  <h1>Edit category</h1>
+  {% else %}
+  <h1>Add category</h1>
+  {% endif %}
+  <form method="POST">
+    <div class="form-group">
+      <label for="inputCategoryName">Category name</label>
+      <input type="text" name="name" class="form-control" id="inputCategoryName"
+        placeholder="Enter category name"
+        value="{% if content.is_edit %}{{ content.category.name }}{% endif %}">
+    </div>
+    <button type="submit" class="btn btn-primary">
+      {% if content.is_edit %}
+      Save
+      {% else %}
+      Add
+      {% endif %}
+    </button>
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary">Cancel</button>
+  </form>
+{% endblock %}

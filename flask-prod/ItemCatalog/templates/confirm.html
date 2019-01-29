@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1>Confirm action</h1>
+  <form method="POST">
+    <p>{{ content.message }}</p>
+    <input type="hidden" name="csrf_token" value="{{ content.csrf_token }}">
+    <button type="submit" class="btn btn-primary">Confirm</button>
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary">Cancel</button>
+  </form>
+{% endblock %}
