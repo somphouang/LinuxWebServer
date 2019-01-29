@@ -7,7 +7,7 @@ The process steps involves installing and configuring the Apache Web Server, WSG
  
 # STEP 1: Get started on AWS Lightsail
 * 1. Create an account with Amazon Web Services cloud [aws.amazon.com](https://aws.amazon.com)
-** Click on the top right button "sign In to the Console" log into console and enter the login.
+* Click on the top right button "sign In to the Console" log into console and enter the login.
 
 * 2. Under Compute services click on "Lightsail"
 * 3. Create Instance to create new Instance 
@@ -20,23 +20,24 @@ and attached it to the new Lightsail instance.
 * 9. Click on "Connect using SSH" and follow the STEP 2 below.
 
 * 10. Optional and used in this project:
-** In AWS Console, Route53 
-*** 1. Register domain "somphouang.com"
-*** 2. In Hosted Zone, select "somphouang.com"
-*** 3. Create Record Set with Type "A - IPv4 address" and enter Value "18.233.103.5"
+
+## In AWS Console, Route53 
+* 1. Register domain "somphouang.com"
+* 2. In Hosted Zone, select "somphouang.com"
+* 3. Create Record Set with Type "A - IPv4 address" and enter Value "18.233.103.5"
  
 # STEP 2: Configuring the AWS Lightsail Instance
 * 1. When connected using the AWS Console web interface, from "Connect using SSH"
-** a.  Add the "grader" user
+* a.  Add the "grader" user
 ```
 $ adduser grader
 ```
-*** In this project, enter the password: <sent to grader in the comment>
-** b.  Give the sudo privilege to grader user
+* In this project, enter the password: <sent to grader in the comment>
+* b.  Give the sudo privilege to grader user
 ```
 $ usermod -aG sudo grader
 ```
-*** It is also possible to do this by configuring the sudoer
+* It is also possible to do this by configuring the sudoer
 ```
 $ sudo nano /etc/sudoers.d/grader
 ```
@@ -48,7 +49,7 @@ grader ALL=(ALL) NOPASSWD:ALL
 ```
 Then press Ctrl+O to flush to file and then Ctrl+x to exit.
 
-** c. Configuring the UTC Timezone
+* c. Configuring the UTC Timezone
 ```
 $ sudo dpkg-reconfigure tzdata
 ```
@@ -59,7 +60,7 @@ Local time is now:      Sat Jan 26 02:01:32 UTC 2019.
 Universal Time is now:  Sat Jan 26 02:01:32 UTC 2019.
 ```
 
-** d. Change the SSH port from 22 to 2200
+* d. Change the SSH port from 22 to 2200
 Edit the file in /etc/ssh/sshd_config
 ```
 $ sudo nano /etc/ssh/sshd_config
@@ -72,7 +73,7 @@ Port 2200
 ```
 
 At this point, the new user grader exist and has sudo, however, we need to add the SSH key for remote login
-*** On the PC, say using git bash or any other OS platform use the ssh-keygen
+* On the PC, say using git bash or any other OS platform use the ssh-keygen
 ``` 
 $ ssh-key -t rsa -b 4096 -C admin@somphouang.com
 ```
@@ -82,8 +83,8 @@ This will create the file if using all defaults path and filename into "folder/.
 ```
 $ sudo nano /home/grader/.ssh/authorized_keys
 ```
-*** Make sure that on the AWS Lightsail Home web interface click on the Instance and go to Network tab, add the new rule for custom TCP 2200, when tested below successfully, can go remove the rule for SSH at 22.
-**** In the PC using git bash, try to log into the remote Linux Server by ssh
+* Make sure that on the AWS Lightsail Home web interface click on the Instance and go to Network tab, add the new rule for custom TCP 2200, when tested below successfully, can go remove the rule for SSH at 22.
+* In the PC using git bash, try to log into the remote Linux Server by ssh
 ```
 $ ssh -p 2200 grader@somphouang.com -i id_rsa
 ```
@@ -92,7 +93,7 @@ This should be successful otherwise, try restarting the SSH service on the Linux
 $ sudo service ssh restart
 ```
 
-** e.  Install Progresql and other requirements
+* e.  Install Progresql and other requirements
 ```
 $ sudo apt-get update
 $ sudo apt-get install postgresql postgresql-contrib libpq-dev
@@ -102,16 +103,16 @@ $ sudo pip install psycopg2 Flask-SQLAlchemy Flask-Migrate
 $ sudo pip install google_auth_oauthlib
 ```
 
-*** Add Postgresql user "catalogitem" and created password "udacity"
-**** Creating user
+* Add Postgresql user "catalogitem" and created password "udacity"
+* Creating user
 ``` 
 $ sudo -u postgres createuser catalogitem
 ```
-**** Creating Database catalogitem
+Creating Database catalogitem
 ```
 $ sudo -u postgres createdb catalogitem
 ```
-**** Giving the "catalogitem" user a password
+Giving the "catalogitem" user a password
 ```
 $ sudo -u postgres psql
 psql=# alter user catalogitem with encrypted password 'udacity';
@@ -120,15 +121,15 @@ psql=# grant all privileges on database catalogitem to catalogitem;
 
 ```
 
-** f.  Install the Apache for Web Server
+* f.  Install the Apache for Web Server
 ```
 $ sudo apt-get update
 $ sudo apt-get install apache2
 ```
 This will create the /var/www/ folder with default webpage
 
-** g.  Configure the Apache site
-*** Create a folder in "/var/www/flask-prod/" and file webtool.wsgi
+* g.  Configure the Apache site
+Create a folder in "/var/www/flask-prod/" and file webtool.wsgi
 ```
 $ sudo nano /var/www/flask-prod/webtool.wsgi
 
@@ -144,16 +145,16 @@ application.config['SQLALCHEMY_DATABASE_URI'] = (
 
 ```
 
-*** Create a folder as see "/var/www/somphouang.com/logs/" for the logs to go into when configuring the virtualhost later 
+Create a folder as see "/var/www/somphouang.com/logs/" for the logs to go into when configuring the virtualhost later 
 
-*** Navigate to the folder /var/www/flask-prod and get the repository project for ItemCatalog
+Navigate to the folder /var/www/flask-prod and get the repository project for ItemCatalog
 ```
 $ cd /var/www/flask-prod
 $ sudo git clone https://github.com/soundmos/ItemCatalog.git
 ```
 This will create the folder "ItemCatalog" for the web application.  
 
-**** Open the file app.py and modified the followings:
+Open the file app.py and modified the followings:
 ```
 $ sudo nano /var/www/flask-prod/ItemCatalog/app.py
 
@@ -162,7 +163,7 @@ $ sudo nano /var/www/flask-prod/ItemCatalog/app.py
 ```
 
 
-*** Edit the /etc/hosts with the domain name somphouang.com
+Edit the /etc/hosts with the domain name somphouang.com
 ```
 $ sudo nano /etc/hosts
 
@@ -178,7 +179,7 @@ ff02::3 ip6-allhosts
 
 ``` 
 
-*** Configure the site to enable
+Configure the site to enable
 ```
 $ sudo nano /etc/apache2/sites-enabled/somphouang.com.conf
 
@@ -204,14 +205,14 @@ RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 
 ```
 
-*** After completing the above steps enabe the mod-wsgi configuration and restart the apache service
+After completing the above steps enabe the mod-wsgi configuration and restart the apache service
 ```
 $ sudo a2enconf mod-wsgi
 $ sudo service apache2 restart
 ```
 
-** Configure the site to use SSL for Secure Transport when using with Google OAuth2 API, it required HTTPS.
-*** Using the free SSL Certificate from Let's Encrypt
+Configure the site to use SSL for Secure Transport when using with Google OAuth2 API, it required HTTPS.
+Using the free SSL Certificate from Let's Encrypt
 ```
 $ sudo git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt
 ```
