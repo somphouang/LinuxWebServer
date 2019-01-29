@@ -17,9 +17,9 @@ Software Packages that are needed to be installed and configured summary
 * sudo apt-get install libapache2-mod-wsgi
 * sudo apt-get install python-certbot-apache
 
-* python-pip
-** pip install psycopg2 Flask-SQLAlchemy Flask-Migrate
-** pip install google_auth_oauthlib
+* sudo apt-get install python-pip
+* pip install psycopg2 Flask-SQLAlchemy Flask-Migrate
+* pip install google_auth_oauthlib
 
 #### Note: letsencrypt packages and deployment instructions are in STEP 2 below
 * letsencrypt via git 
