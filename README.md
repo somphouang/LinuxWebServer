@@ -30,34 +30,34 @@ $ sudo add-apt-repository ppa:certbot/certbot
 
 ## Deployment
 ### STEP 1: Get started on AWS Lightsail
-* 1. Create an account with Amazon Web Services cloud [aws.amazon.com](https://aws.amazon.com)
+* Create an account with Amazon Web Services cloud [aws.amazon.com](https://aws.amazon.com)
 * Click on the top right button "sign In to the Console" log into console and enter the login.
 
-* 2. Under Compute services click on "Lightsail"
-* 3. Create Instance to create new Instance 
-* 4. Selet a platform "Linux/Unix" and choose blueprint OS Only, select Ubuntu 16.04 LTS
-* 5. Choose instance plan of $3.50 USD per month.
-* 6. Can change instance name or leave the default.
-* 7. When Instance is created and running, go to the Networking tab and choose "Create static IP" 
+* Under Compute services click on "Lightsail"
+* Create Instance to create new Instance 
+* Selet a platform "Linux/Unix" and choose blueprint OS Only, select Ubuntu 16.04 LTS
+* Choose instance plan of $3.50 USD per month.
+* Can change instance name or leave the default.
+* When Instance is created and running, go to the Networking tab and choose "Create static IP" 
 and attached it to the new Lightsail instance.
-* 8. Go back into Instances tab, click on the "..." on the top right and choose "Manage"
-* 9. Click on "Connect using SSH" and follow the STEP 2 below.
+* Go back into Instances tab, click on the "..." on the top right and choose "Manage"
+* Click on "Connect using SSH" and follow the STEP 2 below.
 
-* 10. Optional and used in this project:
+* Optional and used in this project:
 
 ### In AWS Console, Route53 
-* 1. Register domain "somphouang.com"
-* 2. In Hosted Zone, select "somphouang.com"
-* 3. Create Record Set with Type "A - IPv4 address" and enter Value "18.233.103.5"
+* Register domain "somphouang.com"
+* In Hosted Zone, select "somphouang.com"
+* Create Record Set with Type "A - IPv4 address" and enter Value "18.233.103.5"
  
 ### #STEP 2: Configuring the AWS Lightsail Instance
-* 1. When connected using the AWS Console web interface, from "Connect using SSH"
-* a.  Add the "grader" user
+* When connected using the AWS Console web interface, from "Connect using SSH"
+** Add the "grader" user
 ```
 $ adduser grader
 ```
 * In this project, enter the password: <sent to grader in the comment>
-* b.  Give the sudo privilege to grader user
+** Give the sudo privilege to grader user
 ```
 $ usermod -aG sudo grader
 ```
@@ -104,7 +104,7 @@ PermitRootLogin no
 At this point, the new user grader exist and has sudo, however, we need to add the SSH key for remote login
 * On the PC, say using git bash or any other OS platform use the ssh-keygen
 ``` 
-$ ssh-key -t rsa -b 4096 -C admin@somphouang.com
+$ ssh-keygen -t rsa -b 4096 -C admin@somphouang.com
 ```
 This will create the file if using all defaults path and filename into "folder/.ssh/"
 1. File id_rsa --> Used for the key to log into the Remote Linux Server
@@ -319,13 +319,8 @@ https://somphouang.com/catalog
 https://somphouang.com/oauth2callback
 
 ```
-### STEP 4: Update the packages to the latest versions
+### STEP 4: Update the packages to the latest versions (optional)
 ```
 $ sudo apt-get update && sudo apt-get upgrade
 $ sudo apt-get update && sudo apt-get dist-upgrade
 ```
-
-### STEP 5: Please visit [http://somphouang.com](http://somphouang.com) to test run this web application for Item Catalog!
-
-
-Thank you to Udacity Nanodegree Course trainers for Fullstack Web Developer and teaching me to learn to be able to develop exciting projects like this one. 
